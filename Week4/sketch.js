@@ -11,7 +11,7 @@ This sketch implements a simple bubble gun
 */
 
 class bubbleObj {
-  constructor(x, y, s) {
+  constructor(x, y, s = random(7, 15)) {
     this.pos = new p5.Vector(x, y);
     this.size = s;
     this.direction = new p5.Vector(random(-s/100, s/100), random(-s/100, s/100));
@@ -43,7 +43,7 @@ class bubbleObj {
       this.direction.y = -this.direction.y;
     }
 
-    //increase the size of bubble every 30 frames
+    //increase the size and decrease the opacity every 30 frames
     if (this.currFrame < frameCount - 30) {
       this.currFrame = frameCount;
       this.size += 0.5;
@@ -56,8 +56,8 @@ class bubbleObj {
   repel() {
     //implement repulsion between bubbles
     for (let i = 0; i < bubbles.length; i++) {
-      if (this !== bubbles[i]) {
-        // repel if collide with another bubble
+      if (this !== bubbles[i] && this.size > 14) {
+        // repel if collide with another bubble and the bubble size is not too small
         if (dist(this.pos.x, this.pos.y, bubbles[i].pos.x, bubbles[i].pos.y) 
               <= this.size/2+bubbles[i].size/2) {
           // change moving directions
@@ -88,11 +88,14 @@ function initBubbles() {
     bubbles.push(new bubbleObj(random(50, 550), random(50, 550), random(15, 30)));
   }
 }
-// If mouse clicked, emit bubbles
-function mouseClicked() {
-  for (let i = 0; i < 15; i++) {
-    bubbles.push(new bubbleObj(mouseX-gun_size/2, mouseY-gun_size/2, random(7, 15)));
-  }
+
+// If mouse pressed, emit bubbles till mouse released
+var emit = false;
+function mousePressed() {
+  emit = true;
+}
+function mouseReleased() {
+  emit = false;
 }
 
 var bubble_gun;
@@ -112,6 +115,11 @@ function draw() {
 
   // Display bubble gun image at the mouse location
   image(bubble_gun, mouseX-gun_size/2, mouseY-gun_size/2, gun_size, gun_size);
+
+  // emit bubbles when mouse pressed and there are not too many bubbles
+  if (emit && bubbles.length < 200) {
+    bubbles.push(new bubbleObj(mouseX-gun_size/2, mouseY-gun_size/2));
+  }
 
   // Display bubbles
   for (let i = 0; i < bubbles.length; i++) {
