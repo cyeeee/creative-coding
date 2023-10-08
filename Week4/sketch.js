@@ -1,13 +1,20 @@
 /*
 Week4 - Interaction
 Author: Chenyi Wang
-Date: 10/07/2023
+Date: 10/08/2023
 
 Instruction:
 Create a sketch that adds objects based on interaction (mouse press, keystroke, etc) 
 that interact with each other (collision, repulsion, etc.)
 
 This sketch implements a simple bubble gun
+In a 600x600 canvas, the mouse represents a bubble gun as there's a bubble gun icon attached to the cursor
+When the mouse is pressed, the gun emits bubbles and will stop when the mouse is released OR there are too many bubbles on the display
+Each bubble will bounce off each other and at the border if it's not too small
+The initial size of each bubble is small and will increase over time
+The opacity of the bubble will also decrease as its size increases
+The bubble will disappear when its size is too big
+
 */
 
 class bubbleObj {
