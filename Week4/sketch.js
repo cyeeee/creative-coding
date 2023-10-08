@@ -14,13 +14,18 @@ class bubbleObj {
   constructor(x, y, s) {
     this.pos = new p5.Vector(x, y);
     this.size = s;
-    //TODO: different speed for different size of bubbles
-    this.direction = new p5.Vector(random(-1, 1), random(-1, 1));
+    this.direction = new p5.Vector(random(-s/100, s/100), random(-s/100, s/100));
+    this.currFrame = frameCount;
+    this.r = random(0, 150);
+    this.g = random(150, 255);
+    this.b = random(150, 255);
+    this.opacity = 160;
   }
 
   display() {
     //draw bubbles
-    fill(230, 100); //TODO: random color
+    stroke(this.r+50, this.g+50, this.b+50, 160);
+    fill(this.r, this.g, this.b, this.opacity);
     circle(this.pos.x, this.pos.y, this.size);
     
     this.update();
@@ -38,6 +43,13 @@ class bubbleObj {
       this.direction.y = -this.direction.y;
     }
 
+    //increase the size of bubble every 30 frames
+    if (this.currFrame < frameCount - 30) {
+      this.currFrame = frameCount;
+      this.size += 0.5;
+      this.opacity -= 3;
+    }
+
     this.repel();
   }
 
@@ -48,14 +60,14 @@ class bubbleObj {
         // repel if collide with another bubble
         if (dist(this.pos.x, this.pos.y, bubbles[i].pos.x, bubbles[i].pos.y) 
               <= this.size/2+bubbles[i].size/2) {
-          var v = new p5.Vector(this.pos.x - bubbles[i].pos.x, this.pos.y - bubbles[i].pos.y);
           // change moving directions
+          var v = new p5.Vector(this.pos.x - bubbles[i].pos.x, this.pos.y - bubbles[i].pos.y);
           var heading1 = this.direction.heading();
           var heading2 = v.heading();
           var angle = abs(heading2 - heading1);
           if (angle > TWO_PI) angle = -angle;
           this.direction.rotate(angle*2);
-          v.mult(0.03);
+          v.mult(0.01);
           this.direction.x += v.x;
           this.direction.y += v.y;
           v.mult(-1);
@@ -73,12 +85,15 @@ function initBubbles() {
   // Add some bubbles to display on initialization
   for (let i = 0; i < 10; i++) {
     // add bubbles at random position with random size
-    bubbles.push(new bubbleObj(random(50, 550), random(50, 550), random(10, 30)));
+    bubbles.push(new bubbleObj(random(50, 550), random(50, 550), random(15, 30)));
   }
 }
-// If mouse pressed, push new elements to bubbles array till mouse released
-// mousePressed(), mouseReleased()
-// mouseClicked()?
+// If mouse clicked, emit bubbles
+function mouseClicked() {
+  for (let i = 0; i < 15; i++) {
+    bubbles.push(new bubbleObj(mouseX-gun_size/2, mouseY-gun_size/2, random(7, 15)));
+  }
+}
 
 var bubble_gun;
 var gun_size = 40;
@@ -88,6 +103,7 @@ function preload() {
 
 function setup() {
   createCanvas(600, 600);
+  frameRate(60);
   initBubbles();
 }
 
@@ -100,5 +116,9 @@ function draw() {
   // Display bubbles
   for (let i = 0; i < bubbles.length; i++) {
     bubbles[i].display();
+    // Remove the bubble when its size is too big
+    if (bubbles[i].size > 40) {
+      bubbles.splice(i, 1);
+    }
   }
 }
