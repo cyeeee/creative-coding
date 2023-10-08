@@ -14,6 +14,7 @@ class bubbleObj {
   constructor(x, y, s) {
     this.pos = new p5.Vector(x, y);
     this.size = s;
+    //TODO: different speed for different size of bubbles
     this.direction = new p5.Vector(random(-1, 1), random(-1, 1));
   }
 
@@ -36,10 +37,34 @@ class bubbleObj {
     if (this.pos.y >= height - this.size/2 || this.pos.y < this.size/2) {
       this.direction.y = -this.direction.y;
     }
+
+    this.repel();
   }
 
   repel() {
     //implement repulsion between bubbles
+    for (let i = 0; i < bubbles.length; i++) {
+      if (this !== bubbles[i]) {
+        // repel if collide with another bubble
+        if (dist(this.pos.x, this.pos.y, bubbles[i].pos.x, bubbles[i].pos.y) 
+              <= this.size/2+bubbles[i].size/2) {
+          var v = new p5.Vector(this.pos.x - bubbles[i].pos.x, this.pos.y - bubbles[i].pos.y);
+          // change moving directions
+          var heading1 = this.direction.heading();
+          var heading2 = v.heading();
+          var angle = abs(heading2 - heading1);
+          if (angle > TWO_PI) angle = -angle;
+          this.direction.rotate(angle*2);
+          v.mult(0.03);
+          this.direction.x += v.x;
+          this.direction.y += v.y;
+          v.mult(-1);
+          bubbles[i].direction.x += v.x;
+          bubbles[i].direction.y += v.y;
+        }
+        bubbles[i].direction.normalize();
+      }
+    }
   }
 }
 
