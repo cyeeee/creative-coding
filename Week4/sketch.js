@@ -57,14 +57,14 @@ class bubbleObj {
       this.opacity -= 3;
     }
 
-    this.repel();
+    this.collide();
   }
 
-  repel() {
-    //implement repulsion between bubbles
+  collide() {
+    //implement collision between bubbles
     for (let i = 0; i < bubbles.length; i++) {
       if (this !== bubbles[i] && this.size > 14) {
-        // repel if collide with another bubble and the bubble size is not too small
+        // collide with another bubble if the bubble size is not too small
         if (dist(this.pos.x, this.pos.y, bubbles[i].pos.x, bubbles[i].pos.y) 
               <= this.size/2+bubbles[i].size/2) {
           // change moving directions
@@ -136,4 +136,10 @@ function draw() {
       bubbles.splice(i, 1);
     }
   }
+
+  // Add instruction at the bottom of the canvas
+  fill(220);
+  textStyle(NORMAL);
+  textFont('Courier New', 16);
+  text("Press MOUSE to shoot bubbles", 170, 575);
 }
