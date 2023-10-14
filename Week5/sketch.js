@@ -13,7 +13,7 @@ class TextObj {
   constructor(x, y, c) {
     this.x = x;
     this.y = y;
-    this.currY = y+40;  //slowly move up the text
+    this.currY = y+50;  //slowly move up the text
     this.ocapity = 0;
     this.content = c;
     this.size = 28;
@@ -51,12 +51,14 @@ function keyReleased() {
 }
 
 function checkKeyPress() {
-  if (interface === 1 && keyArray[32] === 1) {
+  if (interface === 1 && ready_switch && keyArray[32] === 1) {
     interface = 2;
+    ready_switch = false;
   }
 
-  if (interface === 2 & keyArray[13] === 1) {
+  if (interface === 2 && ready_update && keyArray[13] === 1) {
     apiRequest();
+    ready_update = false;
   }
 }
 
@@ -68,6 +70,8 @@ var generate;
 var fact;
 var cue;
 var interface;
+var ready_switch;
+var ready_update;
 
 function setup() {
   createCanvas(600, 600);
@@ -83,6 +87,8 @@ function setup() {
   cue = new TextObj(100, 200, "Let's learn about this day in history");
 
   interface = 1;
+  ready_switch = false;
+  ready_update = false;
 }
 
 function draw() {
@@ -103,48 +109,31 @@ function draw() {
       }
 
       if (cue.ocapity >= 255) {
+        ready_switch = true;
         textStyle(BOLD);
         textFont('Courier New', 16);
-        text("Press SPACE to check the fact", 170, 575);
+        text("⇾", 290, 555);
+        text("Press SPACE to see the fact", 170, 575);
       }
       break;
 
     case 2:
       if (dateFact !== undefined) {
-        //TODO: display the fact
-        textStyle(NORMAL);
-        textFont('Georgia', 28);
-        textWrap(WORD);
-        text(dateFact, 100, 100, 400);
+        fact.display();
       }
 
-      textStyle(BOLD);
-      textFont('Courier New', 16);
-      text("Press ENTER to check another fact", 160, 575);
-
+      if (fact.ocapity >= 255) {
+        ready_update = true;
+        textStyle(BOLD);
+        textFont('Courier New', 16);
+        text("↻", 290, 555);
+        text("Press ENTER to see another fact", 150, 575);
+      }
       break;
 
     default:
       break;
   }
-
-  /* greeting.display();
-
-  if (greeting.ocapity >= 255) {
-    greeting1.display();
-  }
-
-  if (greeting1.ocapity >= 255) {
-    cue.display();
-  }
-
-  if (dateFact !== undefined) {
-    //TODO: display the fact
-    if (cue.ocapity >= 255) {
-      textWrap(WORD);
-      text(dateFact, 100, 300, 400);
-    }
-  } */
 
 }
 
@@ -158,4 +147,5 @@ async function apiRequest() {
   //console.log(data);
   dateFact = data.text;
   //console.log(dateFact);
+  fact = new TextObj(100, 100, dateFact);
 }
