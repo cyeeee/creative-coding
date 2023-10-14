@@ -22,6 +22,7 @@ class TextObj {
   display() {
     this.fadeIn();
     fill(0, this.ocapity);
+    textStyle(NORMAL);
     //textSize(this.size);
     textFont('Georgia', this.size);
     //TODO: text font
@@ -45,9 +46,17 @@ function keyPressed() {
   keyArray[keyCode] = 1;
 }
 
+function keyReleased() {
+  keyArray[keyCode] = 0;
+}
+
 function checkKeyPress() {
   if (interface === 1 && keyArray[32] === 1) {
     interface = 2;
+  }
+
+  if (interface === 2 & keyArray[13] === 1) {
+    apiRequest();
   }
 }
 
@@ -55,6 +64,7 @@ var greeting;
 var greeting1;
 var dateStr;
 var dateFact;
+var generate;
 var fact;
 var cue;
 var interface;
@@ -63,6 +73,7 @@ function setup() {
   createCanvas(600, 600);
 
   apiRequest();
+  generate = false;
 
   greeting = new TextObj(100, 100, "Hello");
 
@@ -92,7 +103,7 @@ function draw() {
       }
 
       if (cue.ocapity >= 255) {
-        textStyle(NORMAL);
+        textStyle(BOLD);
         textFont('Courier New', 16);
         text("Press SPACE to check the fact", 170, 575);
       }
@@ -101,10 +112,16 @@ function draw() {
     case 2:
       if (dateFact !== undefined) {
         //TODO: display the fact
+        textStyle(NORMAL);
         textFont('Georgia', 28);
         textWrap(WORD);
         text(dateFact, 100, 100, 400);
       }
+
+      textStyle(BOLD);
+      textFont('Courier New', 16);
+      text("Press ENTER to check another fact", 160, 575);
+
       break;
 
     default:
