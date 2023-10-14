@@ -1,13 +1,18 @@
 /*
 Week 5 - Data
 Author: Chenyi Wang
-Date: 10/13/2023
+Date: 10/14/2023
 
 Instruction:
 Create a sketch that calls an API, processes the data, and visualizes it somehow.
 
 This sketch fetches data from a number API and displays a random fact of today's date
+
+There's a welcome page that prompts users about what this sketch does, and they can switch the page by pressing the key
+
+Users are able to keep fetching new facts as long as they want
 */
+
 class TextObj {
   // display the text, fade in
   constructor(x, y, c) {
