@@ -16,27 +16,39 @@ class TextObj {
     this.currY = y+50;  //slowly move up the text
     this.ocapity = 0;
     this.content = c;
-    this.size = 28;
+    this.size = 32;
+    this.textBoxW = width-this.x*2;
+    this.set = false;
+    this.out = false;
   }
 
   display() {
-    this.fadeIn();
     fill(0, this.ocapity);
     textStyle(NORMAL);
-    //textSize(this.size);
     textFont('Georgia', this.size);
-    //TODO: text font
     textWrap(WORD);
-    //text(this.content, this.x, this.y, 400);  //TODO: text box width
     if (this.currY !== this.y) {
       this.currY--;
     }
-    text(this.content, this.x, this.currY, 400);
+    text(this.content, this.x, this.currY, this.textBoxW);
   }
 
   fadeIn() {
     if (this.ocapity < 255) {
       this.ocapity += 1.8;
+    }
+    else {
+      this.set = true;
+    }
+  }
+
+  shift() {
+    if (this.x+this.textBoxW > 0 && this.ocapity > 0) {
+      this.x -= 1.5;
+      this.ocapity -= 1.8;
+    }
+    else {
+      this.out = true;
     }
   }
 }
@@ -56,14 +68,16 @@ function checkKeyPress() {
     ready_switch = false;
   }
 
-  if (interface === 2 && ready_update && keyArray[13] === 1) {
+  if (interface === 3 && ready_update && keyArray[13] === 1) {
     apiRequest();
     ready_update = false;
   }
 }
 
+var text_box_x = 100;
+var text_box_y = 100;
 var greeting;
-var greeting1;
+var showDate;
 var dateStr;
 var dateFact;
 var generate;
@@ -79,12 +93,12 @@ function setup() {
   apiRequest();
   generate = false;
 
-  greeting = new TextObj(100, 100, "Hello");
+  greeting = new TextObj(text_box_x, text_box_y, "Hello");
 
   dateStr = "Today is " + month() + "/" + day();
-  greeting1 = new TextObj(100, 150, dateStr);
+  showDate = new TextObj(text_box_x, text_box_y+70, dateStr);
 
-  cue = new TextObj(100, 200, "Let's learn about this day in history");
+  cue = new TextObj(text_box_x, text_box_y+140, "Let's learn about this day in history");
 
   interface = 1;
   ready_switch = false;
@@ -99,34 +113,54 @@ function draw() {
   switch(interface) {
     case 1:
       greeting.display();
+      greeting.fadeIn();
 
-      if (greeting.ocapity >= 255) {
-        greeting1.display();
+      if (greeting.set) {
+        showDate.display();
+        showDate.fadeIn();
       }
 
-      if (greeting1.ocapity >= 255) {
+      if (showDate.set) {
         cue.display();
+        cue.fadeIn();
       }
 
       if (cue.ocapity >= 255) {
         ready_switch = true;
         textStyle(BOLD);
-        textFont('Courier New', 16);
-        text("⇾", 290, 555);
+        textFont('Courier New');
+        textSize(22);
+        text("⇾", 290, 550);
+        textSize(16);
         text("Press SPACE to see the fact", 170, 575);
       }
       break;
 
     case 2:
+      greeting.display();
+      greeting.shift();
+      showDate.display();
+      showDate.shift();
+      cue.display();
+      cue.shift();
+      if (cue.out) {
+        interface = 3;
+      }
+      break;
+
+    case 3:
       if (dateFact !== undefined) {
         fact.display();
+        fact.fadeIn();
       }
 
-      if (fact.ocapity >= 255) {
+      if (fact.set) {
         ready_update = true;
         textStyle(BOLD);
-        textFont('Courier New', 16);
-        text("↻", 290, 555);
+        textFont('Courier New');
+        textSize(22);
+        text("↻", 290, 550);
+        textSize(16);
         text("Press ENTER to see another fact", 150, 575);
       }
       break;
