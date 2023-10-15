@@ -1,190 +1,94 @@
 /*
 Week 5 - Data
 Author: Chenyi Wang
-Date: 10/14/2023
+Date: 10/15/2023
 
 Instruction:
 Create a sketch that calls an API, processes the data, and visualizes it somehow.
 
-This sketch fetches data from a number API and displays a random fact of today's date
-
-There's a welcome page that prompts users about what this sketch does, and they can switch the page by pressing the key
-
-Users are able to keep fetching new facts as long as they want
+This sketch generate a (fake) profile for a random user
 */
 
-class TextObj {
-  // display the text, fade in
-  constructor(x, y, c) {
-    this.x = x;
-    this.y = y;
-    this.currY = y+50;  //slowly move up the text
-    this.ocapity = 0;
-    this.content = c;
-    this.size = 32;
-    this.textBoxW = width-this.x*2;
-    this.set = false;
-    this.out = false;
-  }
+var user_name;
+var user_title;
+var user_phone;
+var user_email;
+var user_location;
 
-  display() {
-    fill(0, this.ocapity);
-    textStyle(NORMAL);
-    textFont('Georgia', this.size);
-    textWrap(WORD);
-    if (this.currY !== this.y) {
-      this.currY--;
-    }
-    text(this.content, this.x, this.currY, this.textBoxW);
-  }
-
-  fadeIn() {
-    if (this.ocapity < 255) {
-      this.ocapity += 1.8;
-    }
-    else {
-      this.set = true;
-    }
-  }
-
-  shift() {
-    if (this.x+this.textBoxW > 0 && this.ocapity > 0) {
-      this.x -= 1.5;
-      this.ocapity -= 1.8;
-    }
-    else {
-      this.out = true;
-    }
-  }
-}
-
-var keyArray = [];
-function keyPressed() {
-  keyArray[keyCode] = 1;
-}
-
-function keyReleased() {
-  keyArray[keyCode] = 0;
-}
-
-function checkKeyPress() {
-  if (interface === 1 && ready_switch && keyArray[32] === 1) {
-    interface = 2;
-    ready_switch = false;
-  }
-
-  if (interface === 3 && ready_update && keyArray[13] === 1) {
-    apiRequest();
-    ready_update = false;
-  }
-}
-
-var text_box_x = 100;
-var text_box_y = 100;
-var greeting;
-var showDate;
-var dateStr;
-var dateFact;
-var generate;
-var fact;
-var cue;
-var interface;
-var ready_switch;
-var ready_update;
+var text_box_x, text_box_w;
 
 function setup() {
-  createCanvas(600, 600);
+  createCanvas(500, 600);
 
   apiRequest();
-  generate = false;
 
-  greeting = new TextObj(text_box_x, text_box_y, "Hello");
-
-  dateStr = "Today is " + month() + "/" + day();
-  showDate = new TextObj(text_box_x, text_box_y+70, dateStr);
-
-  cue = new TextObj(text_box_x, text_box_y+140, "Let's learn about this day in history");
-
-  interface = 1;
-  ready_switch = false;
-  ready_update = false;
+  text_box_x = 50;
+  text_box_w = 400;
 }
 
 function draw() {
-  background(220);
+  background(250);
 
-  checkKeyPress();
+  textFont('Georgia');
+  textWrap(WORD);
 
-  switch(interface) {
-    case 1:
-      greeting.display();
-      greeting.fadeIn();
-
-      if (greeting.set) {
-        showDate.display();
-        showDate.fadeIn();
-      }
-
-      if (showDate.set) {
-        cue.display();
-        cue.fadeIn();
-      }
-
-      if (cue.ocapity >= 255) {
-        ready_switch = true;
-        textStyle(BOLD);
-        textFont('Courier New');
-        textSize(22);
-        text("⇾", 290, 550);
-        textSize(16);
-        text("Press SPACE to see the fact", 170, 575);
-      }
-      break;
-
-    case 2:
-      greeting.display();
-      greeting.shift();
-      showDate.display();
-      showDate.shift();
-      cue.display();
-      cue.shift();
-      if (cue.out) {
-        interface = 3;
-      }
-      break;
-
-    case 3:
-      if (dateFact !== undefined) {
-        fact.display();
-        fact.fadeIn();
-      }
-
-      if (fact.set) {
-        ready_update = true;
-        textStyle(BOLD);
-        textFont('Courier New');
-        textSize(22);
-        text("↻", 290, 550);
-        textSize(16);
-        text("Press ENTER to see another fact", 150, 575);
-      }
-      break;
-
-    default:
-      break;
+  if (user_name !== undefined) {
+    fill(1,135,136);
+    textStyle(BOLD);
+    textSize(32);
+    text(user_name, text_box_x, 50, text_box_w);
   }
 
+  if (user_title !== undefined) {
+    fill(64);
+    textStyle(NORMAL);
+    textSize(26);
+    text(user_title, text_box_x, 90, text_box_w);
+  }
+
+  textStyle(BOLD);
+  textSize(26);
+  text("Personal Info", text_box_x, 170, text_box_w);
+
+  textStyle(NORMAL);
+  fill(1,135,136);
+  textSize(20);
+  text("Phone Number", text_box_x, 220, text_box_w);
+  if (user_phone !== undefined) {
+    fill(64);
+    textSize(26);
+    text(user_phone, text_box_x, 250, text_box_w);
+  }
+
+  textSize(20);
+  fill(1,135,136);
+  text("Email", text_box_x, 300, text_box_w);
+  if (user_email !== undefined) {
+    fill(64);
+    textSize(26);
+    text(user_email, text_box_x, 330, text_box_w);
+  }
+
+  textSize(20);
+  fill(1,135,136);
+  text("Address", text_box_x, 380, text_box_w);
+  if (user_location !== undefined) {
+    fill(64);
+    textSize(26);
+    text(user_location, text_box_x, 410, text_box_w);
+  }
 }
 
 async function apiRequest() {
-  // API: http://numbersapi.com/
-  // Include the query parameter 'json' to return the metadata as a JSON object
-  let link = "http://numbersapi.com/" + month() + "/" + day() + "/date?json";
-  let request = await fetch(link);
+  let request = await fetch("https://randomuser.me/api/");
   //console.log(request);
   let data = await request.json();
   //console.log(data);
-  dateFact = data.text;
-  //console.log(dateFact);
-  fact = new TextObj(100, 100, dateFact);
+  let user = data.results[0];
+  console.log(user);
+  user_name = user.name.first + " " + user.name.last;
+  user_title = user.name.title;
+  user_phone = user.phone;
+  user_email = user.email;
+  user_location = user.location.city + ", " + user.location.state + ", " + user.location.country + ", " + user.location.postcode;
 }
