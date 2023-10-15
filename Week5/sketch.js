@@ -33,7 +33,7 @@ class TextObj {
     textFont('Georgia', this.size);
     textWrap(WORD);
     if (this.currY !== this.y) {
-      this.currY--;
+      this.currY--; //slowly move up the text
     }
     text(this.content, this.x, this.currY, this.textBoxW);
   }
@@ -66,8 +66,9 @@ function keyPressed() {
   freezeFrame = frameCount;
   currKey = keyCode;
 }
+// add debouncing logic for key press to avoid extra calls
 function debouncing() {
-  if (frameCount === freezeFrame+1) {
+  if (frameCount === freezeFrame+1) { // reset key status after 1 frame (~16.67 ms)
     keyArray[currKey] = 0;
   }
 }
@@ -121,6 +122,7 @@ function draw() {
 
   switch(interface) {
     case 1:
+      // fade in the welcome message line by line
       greeting.display();
       greeting.fadeIn();
 
@@ -129,6 +131,7 @@ function draw() {
         cue.fadeIn();
       }
 
+      // display the prompt after the message is set
       if (cue.set) {
         ready_switch = true;
         textStyle(BOLD);
@@ -141,10 +144,12 @@ function draw() {
       break;
 
     case 2:
+      // fade out the welcome message by shifting left
       greeting.display();
       greeting.shift();
       cue.display();
       cue.shift();
+      // switch interface after the message disappear
       if (cue.out) {
         interface = 3;
       }
@@ -201,6 +206,7 @@ function draw() {
         text(user_location, text_box_x, 440, text_box_w);
       }
 
+      // prompt user to re-generate
       textStyle(BOLD);
       textFont('Courier New');
       textSize(22);
@@ -216,6 +222,7 @@ function draw() {
 }
 
 async function apiRequest() {
+  // This API generates random user data
   let request = await fetch("https://randomuser.me/api/");
   //console.log(request);
   let data = await request.json();
