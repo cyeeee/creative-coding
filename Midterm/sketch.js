@@ -1,4 +1,9 @@
+/*
+Midterm
+Author: Chenyi Wang
+Date: 10/22/22
 
+*/
 class hammerObj {
   constructor(x, y) {
     this.pos = new p5.Vector(x, y);
@@ -38,18 +43,40 @@ class holeObj {
   // This class is for both holes and moles 
   constructor(pos) {
     this.pos = pos;
+    this.size = 120;
+    this.mole = 0;
+    this.currFrame = frameCount;
   }
 
   display() {
     fill(0);
-    ellipse(this.pos.x, this.pos.y, 120, 60);
-    // TODO: swith between different images to animate the mole movement
+    imageMode(CENTER);
+    image(holeImg, this.pos.x, this.pos.y, this.size, this.size);
+    if (this.mole === 1) { 
+      if (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60) {
+        image(moleHitImg, this.pos.x, this.pos.y, this.size, this.size);
+        // TODO: add score
+      }
+      else {
+        image(moleImg, this.pos.x, this.pos.y, this.size, this.size);
+      }
+    }
+    if ((frameCount - this.currFrame) > 120) {  // let moles stays for 2 sec.
+      this.mole = 0;
+    }
+    // TODO: let moles move automatically and randomly
   }
 }
 
 var hammerImg;
+var holeImg;
+var moleImg;
+var moleHitImg;
 function preload() {
   hammerImg = loadImage("hammer.png");
+  holeImg = loadImage("hole.png");
+  moleImg = loadImage("mole.png");
+  moleHitImg = loadImage("mole_hit.png");
 }
 
 var keyArray = [];
@@ -68,6 +95,7 @@ function debouncing() {
 }
 
 var WASD;
+var arrowKey;
 function checkKeyPress() {
   if (keyArray[87] === 1) { // W
     WASD = 'W';
@@ -80,6 +108,23 @@ function checkKeyPress() {
   }
   if (keyArray[68] === 1) { // D
     WASD = 'D';
+  }
+  //Tmp: control moles manually using arrow keys for testing
+  if (keyArray[UP_ARROW] === 1) {
+    holes[0].mole = 1;
+    holes[0].currFrame = frameCount;
+  }
+  if (keyArray[LEFT_ARROW] === 1) {
+    holes[1].mole = 1;
+    holes[1].currFrame = frameCount;
+  }
+  if (keyArray[DOWN_ARROW] === 1) {
+    holes[2].mole = 1;
+    holes[2].currFrame = frameCount;
+  }
+  if (keyArray[RIGHT_ARROW] === 1) {
+    holes[3].mole = 1;
+    holes[3].currFrame = frameCount;
   }
 }
 
