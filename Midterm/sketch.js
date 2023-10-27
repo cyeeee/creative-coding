@@ -7,6 +7,7 @@ Date: 10/27/22
 class gameObj {
   constructor() {
     this.score = 0;
+    this.timer = new Timer(60000, true);
   }
 }
 
@@ -174,4 +175,7 @@ function draw() {
   textAlign(LEFT);
   textFont('Courier New', 16);
   text("SCORE: " + game.score, 20, 50);
+  textAlign(RIGHT);
+  textFont('Courier New', 16);
+  text(Math.round(game.timer.getRemainingTime()/1000), width-20, 50);
 }
