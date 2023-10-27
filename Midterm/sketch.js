@@ -1,9 +1,15 @@
 /*
 Midterm
 Author: Chenyi Wang
-Date: 10/22/22
+Date: 10/27/22
 
 */
+class gameObj {
+  constructor() {
+    this.score = 0;
+  }
+}
+
 class hammerObj {
   constructor(x, y) {
     this.pos = new p5.Vector(x, y);
@@ -45,6 +51,8 @@ class holeObj {
     this.pos = pos;
     this.size = 120;
     this.mole = 0;
+    this.hit = 0;
+    this.scored = 0;
     this.currFrame = frameCount;
   }
 
@@ -53,9 +61,13 @@ class holeObj {
     imageMode(CENTER);
     image(holeImg, this.pos.x, this.pos.y, this.size, this.size);
     if (this.mole === 1) { 
-      if (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60) {
+      if (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60 || this.hit === 1) {
+        this.hit = 1;
         image(moleHitImg, this.pos.x, this.pos.y, this.size, this.size);
-        // TODO: add score
+        if (this.scored === 0) {
+          game.score++;
+          this.scored = 1;
+        }
       }
       else {
         image(moleImg, this.pos.x, this.pos.y, this.size, this.size);
@@ -63,6 +75,8 @@ class holeObj {
     }
     if ((frameCount - this.currFrame) > 120) {  // let moles stays for 2 sec.
       this.mole = 0;
+      this.hit = 0;
+      this.scored = 0;
     }
     // TODO: let moles move automatically and randomly
   }
@@ -131,10 +145,13 @@ function checkKeyPress() {
 var holesPos = [];
 var holes = [];
 var hammer;
+var game;
 
 function setup() {
   createCanvas(600, 600);
   frameRate(60);
+
+  game = new gameObj();
 
   holesPos = [new p5.Vector(300, 150), new p5.Vector(150, 300), new p5.Vector(300, 450), new p5.Vector(450, 300)];
   holes = [new holeObj(holesPos[0]), new holeObj(holesPos[1]), new holeObj(holesPos[2]), new holeObj(holesPos[3])]; 
@@ -151,4 +168,10 @@ function draw() {
 
   hammer.display();
   hammer.move();
+
+  fill(0);
+  textStyle(BOLD);
+  textAlign(LEFT);
+  textFont('Courier New', 16);
+  text("SCORE: " + game.score, 20, 50);
 }
