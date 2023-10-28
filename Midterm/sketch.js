@@ -4,12 +4,6 @@ Author: Chenyi Wang
 Date: 10/27/22
 
 */
-class gameObj {
-  constructor() {
-    this.score = 0;
-    this.timer = new Timer(60000);  //initialize the countdown timer with 60 sec
-  }
-}
 
 var hammerImg;
 var holeImg;
@@ -71,12 +65,17 @@ function checkKeyPress() {
   }
 }
 
+function mouseClicked() {
+  if (game.interface === 0) {
+    game.interface = 1;
+    game.timer.start();
+  }
+}
+
 var holesPos = [];
 var holes = [];
 var hammer;
 var game;
-var hole_num;
-var prev_hole_num = 0;
 
 function setup() {
   createCanvas(600, 600);
@@ -93,31 +92,9 @@ function setup() {
 function draw() {
   background(220);
 
-  hammer.display();
-  hammer.move();
+  game.display();
 
-  if (frameCount % 120 === 0) { // generate a new number every 2 sec
-    hole_num = Math.round(random(0, 3));
-    while (hole_num === prev_hole_num && holes[prev_hole_num].mole === 1) {
-      hole_num = Math.round(random(0, 3));
-    }
-    prev_hole_num = hole_num;
+  if (game.timer.expired()) {
+    game.interface = 2;
   }
-  for (let i = 0; i < holes.length; i++) {
-    if (i === hole_num && holes[i].mole === 0) {
-      holes[i].mole = 1;
-      holes[i].currFrame = frameCount;
-    }
-
-    holes[i].display();
-  }
-
-  fill(0);
-  textStyle(BOLD);
-  textAlign(LEFT);
-  textFont('Courier New', 16);
-  text("SCORE: " + game.score, 20, 50);
-  textAlign(RIGHT);
-  textFont('Courier New', 16);
-  text(Math.round(game.timer.getRemainingTime()/1000), width-20, 50);
 }
