@@ -7,79 +7,7 @@ Date: 10/27/22
 class gameObj {
   constructor() {
     this.score = 0;
-    this.timer = new Timer(60000, true);
-  }
-}
-
-class hammerObj {
-  constructor(x, y) {
-    this.pos = new p5.Vector(x, y);
-    this.size = 80;
-  }
-
-  display() {
-    imageMode(CENTER);
-    image(hammerImg, this.pos.x, this.pos.y, this.size, this.size);
-  }
-
-  move() {
-    checkKeyPress();
-    debouncing();
-
-    // TODO: add animation for hammer movement, maybe use tween library
-    switch(WASD) {
-      case 'W':
-        this.pos = new p5.Vector(holesPos[0].x+20, holesPos[0].y-60);
-        break;
-      case 'A':
-        this.pos = new p5.Vector(holesPos[1].x+20, holesPos[1].y-60);
-        break;
-      case 'S':
-        this.pos = new p5.Vector(holesPos[2].x+20, holesPos[2].y-60);
-        break;
-      case 'D':
-        this.pos = new p5.Vector(holesPos[3].x+20, holesPos[3].y-60);
-        break;
-      default:
-        break;
-    }
-  }
-}
-
-class holeObj {
-  // This class is for both holes and moles 
-  constructor(pos) {
-    this.pos = pos;
-    this.size = 120;
-    this.mole = 0;
-    this.hit = 0;
-    this.scored = 0;
-    this.currFrame = frameCount;
-  }
-
-  display() {
-    fill(0);
-    imageMode(CENTER);
-    image(holeImg, this.pos.x, this.pos.y, this.size, this.size);
-    if (this.mole === 1) { 
-      if (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60 || this.hit === 1) {
-        this.hit = 1;
-        image(moleHitImg, this.pos.x, this.pos.y, this.size, this.size);
-        if (this.scored === 0) {
-          game.score++;
-          this.scored = 1;
-        }
-      }
-      else {
-        image(moleImg, this.pos.x, this.pos.y, this.size, this.size);
-      }
-    }
-    if ((frameCount - this.currFrame) > 120) {  // let moles stays for 2 sec.
-      this.mole = 0;
-      this.hit = 0;
-      this.scored = 0;
-    }
-    // TODO: let moles move automatically and randomly
+    this.timer = new Timer(60000);  //initialize the countdown timer with 60 sec
   }
 }
 
@@ -147,6 +75,8 @@ var holesPos = [];
 var holes = [];
 var hammer;
 var game;
+var hole_num;
+var prev_hole_num = 0;
 
 function setup() {
   createCanvas(600, 600);
@@ -163,12 +93,24 @@ function setup() {
 function draw() {
   background(220);
 
-  for (let i = 0; i < holes.length; i++) {
-    holes[i].display();
-  }
-
   hammer.display();
   hammer.move();
+
+  if (frameCount % 120 === 0) { // generate a new number every 2 sec
+    hole_num = Math.round(random(0, 3));
+    while (hole_num === prev_hole_num && holes[prev_hole_num].mole === 1) {
+      hole_num = Math.round(random(0, 3));
+    }
+    prev_hole_num = hole_num;
+  }
+  for (let i = 0; i < holes.length; i++) {
+    if (i === hole_num && holes[i].mole === 0) {
+      holes[i].mole = 1;
+      holes[i].currFrame = frameCount;
+    }
+
+    holes[i].display();
+  }
 
   fill(0);
   textStyle(BOLD);
