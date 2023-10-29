@@ -50,31 +50,33 @@ function checkKeyPress() {
     WASD = 'D';
     hammer.hit = 1;
   }
-  //Tmp: control moles manually using arrow keys for testing
-  if (keyArray[UP_ARROW] === 1) {
-    holes[0].mole = 1;
-    holes[0].currFrame = frameCount;
-  }
-  if (keyArray[LEFT_ARROW] === 1) {
-    holes[1].mole = 1;
-    holes[1].currFrame = frameCount;
-  }
-  if (keyArray[DOWN_ARROW] === 1) {
-    holes[2].mole = 1;
-    holes[2].currFrame = frameCount;
-  }
-  if (keyArray[RIGHT_ARROW] === 1) {
-    holes[3].mole = 1;
-    holes[3].currFrame = frameCount;
+  // control moles manually using arrow keys for two-player mode
+  if (game.mode === 2) {
+    if (keyArray[UP_ARROW] === 1) {
+      holes[0].mole = 1;
+      holes[0].currFrame = frameCount;
+    }
+    if (keyArray[LEFT_ARROW] === 1) {
+      holes[1].mole = 1;
+      holes[1].currFrame = frameCount;
+    }
+    if (keyArray[DOWN_ARROW] === 1) {
+      holes[2].mole = 1;
+      holes[2].currFrame = frameCount;
+    }
+    if (keyArray[RIGHT_ARROW] === 1) {
+      holes[3].mole = 1;
+      holes[3].currFrame = frameCount;
+    }
   }
 }
 
-function mouseClicked() {
+/* function mouseClicked() {
   if (game.interface === 0) {
     game.interface = 1;
     game.timer.start();
   }
-}
+} */
 
 var holesPos = [];
 var holes = [];
@@ -98,7 +100,38 @@ function draw() {
 
   game.display();
 
+  game.playButton.onPress = function() {
+    if (game.interface === 0) {
+      game.mode = 1;
+      game.interface = 1;
+      game.timer.start();
+    }
+  }
+
+  game.playButton2.onPress = function() {
+    if (game.interface === 0) {
+      game.mode = 2;
+      game.interface = 1;
+      game.timer.start();
+    }
+  }
+
   if (game.timer.expired()) {
     game.interface = 2;
+  }
+
+  game.rePlayButton.onPress = function() {
+    if (game.interface === 2) {
+      game.interface = 1;
+      game.timer.reset();
+      game.timer.start();
+    }
+  }
+
+  game.homeButton.onPress = function() {
+    if (game.interface === 2) {
+      game.interface = 0;
+      game.timer.reset();
+    }
   }
 }
