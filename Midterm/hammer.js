@@ -6,6 +6,7 @@ class hammerObj {
     constructor(x, y) {
       this.pos = new p5.Vector(x, y);
       this.size = 80;
+      this.hit = 0;
     }
   
     display() {

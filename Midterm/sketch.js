@@ -36,15 +36,19 @@ var arrowKey;
 function checkKeyPress() {
   if (keyArray[87] === 1) { // W
     WASD = 'W';
+    hammer.hit = 1;
   }
   if (keyArray[65] === 1) { // A
     WASD = 'A';
+    hammer.hit = 1;
   }
   if (keyArray[83] === 1) { // S
     WASD = 'S';
+    hammer.hit = 1;
   }
   if (keyArray[68] === 1) { // D
     WASD = 'D';
+    hammer.hit = 1;
   }
   //Tmp: control moles manually using arrow keys for testing
   if (keyArray[UP_ARROW] === 1) {

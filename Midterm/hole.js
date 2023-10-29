@@ -18,8 +18,9 @@ class holeObj {
       imageMode(CENTER);
       image(holeImg, this.pos.x, this.pos.y, this.size, this.size);
       if (this.mole === 1) { 
-        if (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60 || this.hit === 1) {
+        if ((hammer.hit === 1 && (hammer.pos.x === this.pos.x+20 && hammer.pos.y === this.pos.y-60)) || this.hit === 1) {
           this.hit = 1;
+          hammer.hit = 0;
           image(moleHitImg, this.pos.x, this.pos.y, this.size, this.size);
           if (this.scored === 0) {
             game.score++;
@@ -30,7 +31,7 @@ class holeObj {
           image(moleImg, this.pos.x, this.pos.y, this.size, this.size);
         }
       }
-      if ((frameCount - this.currFrame) > 30) {  // let moles stays for 30 frames
+      if ((frameCount - this.currFrame) > 120) {  // let moles stays for 2 sec
         this.mole = 0;
         this.hit = 0;
         this.scored = 0;
