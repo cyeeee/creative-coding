@@ -102,14 +102,13 @@ function setup() {
 
   game = new gameObj();
 
-  holesPos = [new p5.Vector(300, 150), new p5.Vector(150, 300), new p5.Vector(300, 450), new p5.Vector(450, 300)];
+  holesPos = [new p5.Vector(300, 210), new p5.Vector(130, 320), new p5.Vector(300, 450), new p5.Vector(470, 320)];
   holes = [new holeObj(holesPos[0]), new holeObj(holesPos[1]), new holeObj(holesPos[2]), new holeObj(holesPos[3])]; 
 
-  hammer = new hammerObj(300, 300);
+  hammer = new hammerObj(300, 330);
 }
 
 function draw() {
-  background(220);
 
   game.display();
 
@@ -152,4 +151,43 @@ function draw() {
       game.timer.reset();
     }
   }
+
+  // button hovering animation
+  switch (game.interface) {
+    case 0:
+      game.playButton.onOutside = function() {
+        game.playButton.color = [255, 255, 220];
+      }
+      game.playButton.onHover = function() {
+        game.playButton.color = [205, 205, 170];
+      }
+
+      game.playButton2.onOutside = function() {
+        game.playButton2.color = [255, 255, 220];
+      }
+      game.playButton2.onHover = function() {
+        game.playButton2.color = [205, 205, 170];
+      }
+      break;
+
+    case 2:
+      game.rePlayButton.onOutside = function() {
+        game.rePlayButton.color = [255, 255, 220];
+      }
+      game.rePlayButton.onHover = function() {
+        game.rePlayButton.color = [205, 205, 170];
+      }
+
+      game.homeButton.onOutside = function() {
+        game.homeButton.color = [255, 255, 220];
+      }
+      game.homeButton.onHover = function() {
+        game.homeButton.color = [205, 205, 170];
+      }
+      break;
+
+    default:
+      break;
+  }
+
 }
