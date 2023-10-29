@@ -73,6 +73,12 @@ class gameObj {
           textAlign(RIGHT);
           textFont('Courier New', 16);
           text(Math.round(this.timer.getRemainingTime()/1000), width-20, 50);
+          textAlign(CENTER);
+          textFont('Courier New', 12);
+          text("Use [W, A, S, D] to control the hammer", 300, 570);
+          if (this.mode === 2) {
+            text("Use [↑, ←, ↓, →] to control the moles ", 300, 590);
+          }
         }
           break;
   

@@ -18,10 +18,11 @@ class hammerObj {
       checkKeyPress();
       debouncing();
   
-      // TODO: add animation for hammer movement, maybe use tween library
       switch(WASD) {
         case 'W':
+          // let the hammer located above the corresponding hole
           this.pos = new p5.Vector(holesPos[0].x+20, holesPos[0].y-60);
+          // if the mole is not currently appearing, reset the hammer status
           if (holes[0].mole === 0) {
             this.hit = 0;
           }

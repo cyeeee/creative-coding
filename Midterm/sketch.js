@@ -1,8 +1,28 @@
 /*
 Midterm
 Author: Chenyi Wang
-Date: 10/27/22
+Date: 10/28/22
 
+Prompt: Make your own interactive, screen based artwork. 
+Your sketch needs to contain at least 2 objects that behave independently from one another.
+
+My midterm project is a simple game "whack-a-mole"
+
+The game has three interfaces: home page, game page, and game-over page
+The main game has two modes: single-player mode, and two-player mode, user can pick the mode in the home page
+For single-player mode, user can control the hammer by using WASD keys
+For two-player mode, user can in addition control the moles by using arrow keys
+Both modes have a time limit of 60 seconds
+When the time is up, it will auto switch to the game-over page
+User can then choose to either play again or go back to the home page
+
+The images of the mole and hammer are from the internet:
+https://www.istockphoto.com/illustrations/whack-a-mole
+The buttons in the home and ending pages are using the p5.clickable library:
+https://github.com/Lartu/p5.clickable
+The timer in the game is using the p5.timer library:
+https://github.com/scottkildall/p5.timer
+Other than that, everything else is created from the scratch
 */
 
 var hammerImg;
@@ -71,13 +91,6 @@ function checkKeyPress() {
   }
 }
 
-/* function mouseClicked() {
-  if (game.interface === 0) {
-    game.interface = 1;
-    game.timer.start();
-  }
-} */
-
 var holesPos = [];
 var holes = [];
 var hammer;
@@ -100,6 +113,7 @@ function draw() {
 
   game.display();
 
+  // enter single-plyer mode
   game.playButton.onPress = function() {
     if (game.interface === 0) {
       game.mode = 1;
@@ -108,6 +122,7 @@ function draw() {
     }
   }
 
+  // enter two-player mode
   game.playButton2.onPress = function() {
     if (game.interface === 0) {
       game.mode = 2;
@@ -116,10 +131,12 @@ function draw() {
     }
   }
 
+  // time up, switch to game-over page
   if (game.timer.expired()) {
     game.interface = 2;
   }
 
+  // replay with the same mode
   game.rePlayButton.onPress = function() {
     if (game.interface === 2) {
       game.interface = 1;
@@ -128,6 +145,7 @@ function draw() {
     }
   }
 
+  // back to start page
   game.homeButton.onPress = function() {
     if (game.interface === 2) {
       game.interface = 0;
