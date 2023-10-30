@@ -150,6 +150,7 @@ class gameObj {
       // timer progress bar
       noStroke();
       fill(200, 255, 200);
+      if (time < 10) fill(255, 150, 150); // change the time bar color when less then 10 sec left
       let timerWidth = map(time, 60, 0, 360, 0);
       rect(120, 40, timerWidth, 10);
       
@@ -158,8 +159,16 @@ class gameObj {
       textAlign(CENTER);
       textFont('Courier New', 12);
       text("Use [W, A, S, D] to control the hammer", 300, 570);
-      if (this.mode === 2) {
+      if (this.mode === 2) {  // this is for two-player mode only
         text("Use [↑, ←, ↓, →] to control the moles ", 300, 590);
+      }
+    }
+
+    reset() {
+      this.score = 0;
+      this.timer.reset();
+      for (let i = 0; i < holes.length; i++) {
+        holes[i].mole = 0;
       }
     }
   }

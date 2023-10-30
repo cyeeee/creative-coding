@@ -139,7 +139,7 @@ function draw() {
   game.rePlayButton.onPress = function() {
     if (game.interface === 2) {
       game.interface = 1;
-      game.timer.reset();
+      game.reset();
       game.timer.start();
     }
   }
@@ -148,7 +148,7 @@ function draw() {
   game.homeButton.onPress = function() {
     if (game.interface === 2) {
       game.interface = 0;
-      game.timer.reset();
+      game.reset();
     }
   }
 
