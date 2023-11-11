@@ -31,7 +31,7 @@ class holeObj {
           image(moleImg, this.pos.x, this.pos.y, this.size, this.size);
         }
       }
-      if ((frameCount - this.currFrame) > 120) {  // let moles stays for 2 sec
+      if ((frameCount - this.currFrame) > 60) {  // let moles stays for 1 sec
         this.mole = 0;
         this.hit = 0;
         this.scored = 0;

@@ -62,7 +62,7 @@ class gameObj {
           hammer.move();
   
           if (this.mode === 1) {
-            if (frameCount % 120 === 0) { // generate a new number every 2 sec
+            if (frameCount % 60 === 0) { // generate a new number every 1 sec
                 this.curr_mole = Math.round(random(0, 3));
                 while (this.curr_mole === this.prev_mole && holes[this.prev_mole].mole === 1) {
                   this.curr_mole = Math.round(random(0, 3));
