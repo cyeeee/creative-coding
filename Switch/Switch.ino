@@ -1,5 +1,5 @@
 /*
-Week 8 - Switch
+Switch
 Author: Chenyi Wang
 Date: 11/11/2023
 
