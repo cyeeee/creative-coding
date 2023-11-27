@@ -72,6 +72,7 @@ class boxObj {
       turn = 1;
     }
     this.assigned = 1;
+    filled++;
   }
 
   reset() {
@@ -91,6 +92,7 @@ function keyPressed() {
 function restart() {
   init = 0;
   turn = 1;
+  filled = 0;
   for (let i = 0; i < boxes.length; i++) {
     boxes[i].reset();
   }
@@ -99,6 +101,7 @@ function restart() {
 var boxes = [];
 var turn = 1;
 var init = 0;
+var filled = 0;
 var serial;
 var portName = "COM3";
 var currInput;
@@ -152,18 +155,20 @@ function draw() {
   }
 
   // turn
-  noStroke();
-  fill(45, 210, 160);
-  textStyle(BOLD);
-  textFont('Courier New', 16);
-  textAlign(CENTER, CENTER);
-  if (turn === 1) { 
-    text('× Turn', 300, 15);
+  if (filled < 9) {
+    noStroke();
+    fill(45, 210, 160);
+    textStyle(BOLD);
+    textFont('Courier New', 16);
+    textAlign(CENTER, CENTER);
+    if (turn === 1) { 
+      text('× Turn', 300, 15);
+    }
+    else if (turn === 2) {
+      text('○ Turn', 300, 15);
+    }
   }
-  else if (turn === 2) {
-    text('○ Turn', 300, 15);
-  }
-
+  
   // restart
   noStroke();
   fill(45, 210, 160);
