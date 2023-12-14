@@ -64,11 +64,20 @@ void loop() {
 }
 
 void setRows() {
-  // by testing, when it's lound, sound value is around 70
+  // during testing, the smallest value reached when it's lound is around 75
   // when it's quiet, sound value is 1023
-  // since there are 8 rows, interval would be approximately 130
 
-  if (soundValue < 1023 && soundValue >= 870) {
+  if (soundValue < 1023 && soundValue >= 1000) {
+    rows[0] = false;
+    rows[1] = false;
+    rows[2] = false;
+    rows[3] = false;
+    rows[4] = false;
+    rows[5] = false;
+    rows[6] = false;
+    rows[7] = false;
+  }
+  else if (soundValue < 1000 && soundValue >= 750) {
     rows[0] = true;
     rows[1] = false;
     rows[2] = false;
@@ -78,7 +87,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 870 && soundValue >= 740) {
+  else if (soundValue < 750 && soundValue >= 500) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = false;
@@ -88,7 +97,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 740 && soundValue >= 610) {
+  else if (soundValue < 500 && soundValue >= 300) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
@@ -98,7 +107,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 610 && soundValue >= 480) {
+  else if (soundValue < 300 && soundValue >= 100) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
@@ -108,7 +117,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 480 && soundValue >= 350) {
+  else if (soundValue < 100 && soundValue >= 80) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
@@ -118,7 +127,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 350 && soundValue >= 220) {
+  else if (soundValue < 80 && soundValue >= 75) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
@@ -128,7 +137,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 220 && soundValue >= 90) {
+  else if (soundValue < 75 && soundValue >= 74) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
@@ -138,7 +147,7 @@ void setRows() {
     rows[6] = true;
     rows[7] = false;
   }
-  else if (soundValue < 90) {
+  else if (soundValue < 74) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
