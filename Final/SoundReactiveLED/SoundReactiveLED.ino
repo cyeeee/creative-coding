@@ -21,6 +21,7 @@ FASTLED_USING_NAMESPACE
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS         30
+int brightness = 0;
 bool rows[WIDTH] = {false};
 
 const int SoundSensor = A0;
@@ -45,6 +46,26 @@ void loop() {
   
   soundValue = analogRead(SoundSensor); // 0-1023: when the soundsensor is HIGH (no sound detected), the vaule is 1023
 
+  //litByBrightness();
+  
+  litByRows();
+  
+}
+
+void litByBrightness() {
+  reversedValue = 1023 - soundValue; 
+
+  brightness = reversedValue / 30;
+
+  FastLED.setBrightness(brightness);
+
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB::DarkCyan;
+  }
+  FastLED.show();
+}
+
+void litByRows() {
   setRows();
 
   for (int i = 0; i < WIDTH; i++) {
@@ -60,7 +81,6 @@ void loop() {
     }
   }
   FastLED.show();
-  
 }
 
 void setRows() {
