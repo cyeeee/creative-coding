@@ -20,7 +20,7 @@ FASTLED_USING_NAMESPACE
 #define WIDTH       8
 CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS         30
+#define BRIGHTNESS  10
 int brightness = 0;
 bool rows[WIDTH] = {false};
 
@@ -71,16 +71,18 @@ void litByRows() {
   for (int i = 0; i < WIDTH; i++) {
     if (rows[i]) {
       for( int j = 0; j < WIDTH; j++) { 
-        leds[j+8*i] = CRGB::OrangeRed;
+        leds[j + 8*i] = CRGB::Purple;
       }
     }
     else {
       for( int j = 0; j < WIDTH; j++) { 
-        leds[j+8*i] = CRGB::Black;
+        leds[j + 8*i] = CRGB::Black;  // trun off the LED
       }
     }
   }
   FastLED.show();
+
+  delay(10);  // prevent LED from switching too fast
 }
 
 void setRows() {
@@ -97,7 +99,7 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 1000 && soundValue >= 750) {
+  else if (soundValue < 1000 && soundValue >= 650) {
     rows[0] = true;
     rows[1] = false;
     rows[2] = false;
@@ -107,20 +109,10 @@ void setRows() {
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 750 && soundValue >= 500) {
+  else if (soundValue < 650 && soundValue >= 300) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = false;
-    rows[3] = false;
-    rows[4] = false;
-    rows[5] = false;
-    rows[6] = false;
-    rows[7] = false;
-  }
-  else if (soundValue < 500 && soundValue >= 300) {
-    rows[0] = true;
-    rows[1] = true;
-    rows[2] = true;
     rows[3] = false;
     rows[4] = false;
     rows[5] = false;
@@ -131,13 +123,23 @@ void setRows() {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
+    rows[3] = false;
+    rows[4] = false;
+    rows[5] = false;
+    rows[6] = false;
+    rows[7] = false;
+  }
+  else if (soundValue < 100 && soundValue >= 90) {
+    rows[0] = true;
+    rows[1] = true;
+    rows[2] = true;
     rows[3] = true;
     rows[4] = false;
     rows[5] = false;
     rows[6] = false;
     rows[7] = false;
   }
-  else if (soundValue < 100 && soundValue >= 80) {
+  else if (soundValue < 90 && soundValue >= 80) {
     rows[0] = true;
     rows[1] = true;
     rows[2] = true;
