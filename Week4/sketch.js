@@ -140,6 +140,7 @@ function draw() {
   // Add instruction at the bottom of the canvas
   fill(220);
   textStyle(NORMAL);
+  textAlign(CENTER);
   textFont('Courier New', 16);
-  text("Press MOUSE to shoot bubbles", 170, 575);
+  text("Click or Drag to shoot bubbles", width/2, 580);
 }
